@@ -204,7 +204,7 @@ print(g2)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
-# What is the impact of imputing missing data on the estimates of the total daily number of steps?
+# What is the impact of inputing missing data on the estimates of the total daily number of steps?
 
 Let's take a look at the new chart, with missing values replaced, side-by-side with the original chart.
 
