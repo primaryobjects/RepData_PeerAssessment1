@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 Kory Becker, June 3, 2015
 
@@ -21,7 +16,8 @@ Note: When running the code, be sure to set the working directory location. In R
 
 Before we get started, we'll need to include the required plotting libraries. The following code includes ggplot2 in the project.
 
-```{r}
+
+```r
 ## Including the required R packages.
 packages <- c("ggplot2", "gridExtra")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
@@ -32,11 +28,16 @@ library(ggplot2)
 library(gridExtra)
 ```
 
+```
+## Loading required package: grid
+```
+
 ## Loading and preprocessing the data.
 
 The first step in our data analysis is to load the recorded data from a csv file. As the csv file is zipped, we'll need to first unzip the file, extract the csv, and finally read the data into memory. We'll also remove rows with missing data, as shown in the following code:
 
-```{r}
+
+```r
 # Read csv file.
 data <- read.csv(unz("activity.zip", "activity.csv"))
 
@@ -50,7 +51,8 @@ For our first data analysis question, we'll determine the mean total number of s
 
 Let's start by calculating the total number of steps per day. We can use the aggregate function to do this. We can then calculate the mean of the total number of steps per day and use this to plot a vertical line on the histogram, marking the mean.
 
-```{r}
+
+```r
 # Calculate the total number of steps per day.
 stepsPerDay <- aggregate(steps ~ date, data2, FUN=sum)
 
@@ -80,6 +82,8 @@ g1 <- g1 + geom_text(aes(20400, 22, label=paste('median = ', round(stepsPerDayMe
 print(g1)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 Note in the above code, we're using ggplot2 to draw a histogram chart. We've drawn a vertical line to represent the mean and median total number of steps per day. It's interesting to note that both the mean median are nearly identical in value.
 
     mean = 10766
@@ -93,7 +97,8 @@ To do this, we'll first calculate the average steps per interval, using the aggr
 
 We'll also determine which interval has the maximum number of steps. We can do this by simply checking for the max steps value within averageStepsPerInterval.
 
-```{r}
+
+```r
 # Calculate average steps per interval.
 averageStepsPerInterval <- aggregate(steps ~ interval, data2, FUN=mean)
 
@@ -117,6 +122,8 @@ g <- g + geom_text(aes(1300, 175, label=paste('Max steps (', round(maxStepsInter
 print(g)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+
 After running the above code, you can see that the interval with the maximum number of steps, on average across all days, is interval 835 with 206 steps.
 
          interval steps
@@ -126,7 +133,8 @@ After running the above code, you can see that the interval with the maximum num
 
 So far, we've performed calculations on the cleaned data, with missing values (steps reported as NA) removed. More specifically, there are 17,568 rows in the original dataset, and only 15,264 rows after removing missing values. This leaves 2,304 rows of missing data that is unaccounted for. We can clearly show this in a chart, as follows:
 
-```{r}
+
+```r
 allCount <- nrow(data)
 cleanedCount <- nrow(data2)
 missingCount <- allCount - cleanedCount
@@ -139,6 +147,8 @@ geom_text(aes(2, 1000, label=cleanedCount), col='white', show_guide=FALSE) +
 geom_text(aes(3, 1000, label=missingCount), col='red', show_guide=FALSE)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
     all 17568
     cleaned 15264
     missing 2304
@@ -147,7 +157,8 @@ geom_text(aes(3, 1000, label=missingCount), col='red', show_guide=FALSE)
 
 For the next step in our analysis, we'll fill in the missing data and try running the same reports as above to note any differences in the results. We'll simply use the mean number of steps for each interval, across all of the days, to fill in missing values. It helps that we've already calculated this value in averageStepsPerInterval.
 
-```{r}
+
+```r
 data3 <- data
 
 # Replace NA values at each interval with the average steps for that interval.
@@ -160,7 +171,8 @@ x <- lapply(seq_along(data3$interval), function(i) {
 
 With the missing values filled in, let's try plotting the histogram again.
 
-```{r}
+
+```r
 # Calculate the total number of steps per day.
 stepsPerDay <- aggregate(steps ~ date, data3, FUN=sum)
 
@@ -190,14 +202,19 @@ g2 <- g2 + geom_text(aes(20400, 22, label=paste('median = ', round(stepsPerDayMe
 print(g2)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+
 # What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 Let's take a look at the new chart, with missing values replaced, side-by-side with the original chart.
 
-```{r}
+
+```r
 # Arrange plots side-by-side for comparison.
 grid.arrange(g1, g2, ncol=2)
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
 
 As you can see in the side-by-side plots, the mean and median values remain the same. In fact, the only difference between the original data and the data with missing values replaced, is the overall frequency (ie., number of observations). This can be seen in the center tallest bar, which has grown from about 27 to 36.
 
