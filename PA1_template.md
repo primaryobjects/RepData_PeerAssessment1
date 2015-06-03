@@ -139,7 +139,7 @@ allCount <- nrow(data)
 cleanedCount <- nrow(data2)
 missingCount <- allCount - cleanedCount
 
-missingSummary <- data.frame(set = c('all', 'cleaned', 'missing'), count = c(allCount, cleanedCount, missingCount))
+missingSummary <- data.frame(set = c('complete', 'cleaned', 'missing'), count = c(allCount, cleanedCount, missingCount))
 
 qplot(missingSummary, x=missingSummary$set, y=missingSummary$count, geom='bar', stat='identity', main='Complete vs Missing Data', xlab='', ylab='# Rows') +
 geom_text(aes(1, 1000, label=allCount), col='white', show_guide=FALSE) +
@@ -220,3 +220,21 @@ As you can see in the side-by-side plots, the mean and median values remain the 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+We'll use the newly created dataset, containing filled-in values for the missing NA fields. We'll add a new factor column to our dataset to indicate whether a date is a weekday or a weekend. We can do this with the following code:
+
+
+```r
+# Create a factor to indicate weekday (1) or weekend (2).
+dayOfWeek <- factor(c(1:2), labels = c('weekday', 'weekend'))
+
+# Setup the call to weekdays() to check if a date is a weekend.
+dayOfWeekAbbr <- seq(Sys.Date()-10, Sys.Date(), by = 1)
+
+# Add the new column to the dataset, default to weekday.
+data3 <- cbind(data3, dayofweek = dayOfWeek[1])
+
+# Find the list of rows that match a weekend (Sat, Sun) and set the dayofweek column to weekend.
+data3[grepl("Sat|Sun", weekdays(as.Date(data3$date))),]$dayofweek <- dayOfWeek[2]
+```
+
