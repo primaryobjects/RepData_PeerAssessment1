@@ -66,6 +66,7 @@ stepsPerDayMedian <- median(stepsPerDay$steps)
 g1 <- ggplot(stepsPerDay, aes(x = steps))
 g1 <- g1 + geom_histogram(binwidth=5000, fill='#303030', col='black', alpha=I(.9))
 g1 <- g1 + ggtitle('Total Steps Per Day')
+g1 <- g1 + theme(plot.title = element_text(size=20, face="bold", vjust=2))
 g1 <- g1 + xlab('# Steps')
 g1 <- g1 + ylab('Frequency')
 
@@ -112,14 +113,20 @@ g <- g + ggtitle('5 Minute Interval Time-Series')
 g <- g + xlab('Interval')
 g <- g + ylab('Average # Steps')
 g <- g + theme_bw()
+g <- g + theme(plot.title = element_text(size=20, face="bold", vjust=2))
 
 # Include vertical line for the interval with the max average steps.
 g <- g + geom_vline(xintercept=maxStepsInterval$interval, col='red', linetype='dashed')
 
 # Include labels.
-g <- g + geom_text(aes(1300, 175, label=paste('Max steps (', round(maxStepsInterval$steps), ')', sep='')), col='red', show_guide=FALSE)
+g <- g + geom_text(aes(1300, 175, label=paste('max steps (', round(maxStepsInterval$steps), ')', sep=''), family='CourierNew'), col='red', show_guide=FALSE)
 
 print(g)
+```
+
+```
+## Warning in grid.Call.graphics(L_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : font family not found in Windows font database
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
@@ -144,7 +151,8 @@ missingSummary <- data.frame(set = c('complete', 'cleaned', 'missing'), count = 
 qplot(missingSummary, x=missingSummary$set, y=missingSummary$count, geom='bar', stat='identity', main='Complete vs Missing Data', xlab='', ylab='# Rows') +
 geom_text(aes(1, 1000, label=allCount), col='white', show_guide=FALSE) +
 geom_text(aes(2, 1000, label=cleanedCount), col='white', show_guide=FALSE) +
-geom_text(aes(3, 1000, label=missingCount), col='red', show_guide=FALSE)
+geom_text(aes(3, 1000, label=missingCount), col='red', show_guide=FALSE) +
+theme(plot.title = element_text(size=20, face="bold", vjust=2))
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
@@ -186,6 +194,7 @@ stepsPerDayMedian <- median(stepsPerDay$steps)
 g2 <- ggplot(stepsPerDay, aes(x = steps))
 g2 <- g2 + geom_histogram(binwidth=5000, fill='#303030', col='black', alpha=I(.9))
 g2 <- g2 + ggtitle('Total Steps Per Day')
+g2 <- g2 + theme(plot.title = element_text(size=20, face="bold", vjust=2))
 g2 <- g2 + xlab('# Steps')
 g2 <- g2 + ylab('Frequency')
 
@@ -236,5 +245,45 @@ data3 <- cbind(data3, dayofweek = dayOfWeek[1])
 
 # Find the list of rows that match a weekend (Sat, Sun) and set the dayofweek column to weekend.
 data3[grepl("Sat|Sun", weekdays(as.Date(data3$date))),]$dayofweek <- dayOfWeek[2]
+
+# Calculate average steps per interval.
+averageStepsPerInterval <- aggregate(steps ~ interval + dayofweek, data3, FUN=mean)
+
+g <- ggplot(averageStepsPerInterval, aes(interval, steps))
+g <- g + geom_line(color='aquamarine4')
+g <- g + facet_wrap(~dayofweek, nrow=2)
+g <- g + ggtitle('5 Minute Interval Time-Series')
+g <- g + xlab('Interval')
+g <- g + ylab('# Steps')
+g <- g + theme_bw()
+g <- g + theme(plot.title = element_text(size=20, face="bold", vjust=2))
+
+print(g)
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+
+The code above displays a panel plot, containing a 5-minute interval time series of the average number of steps taken, averaged across all weekday and weekend days, respectively.
+
+The two charts tend to follow a similar pattern. Throughout the middle of the day, activity is higher. During weekdays, it is especially high at interval 835 (as determined earlier in this article). This may coorespond to walking to work or other elevated activity during the week at this time.
+
+Although the weekdays have the highest average number of steps, the weekends have a higher average number of steps taken overall. This is easier to see if we overlay the time-series on top of each other, as shown below.
+
+
+```r
+g <- ggplot(averageStepsPerInterval, aes(interval, steps))
+g <- g + geom_line(aes(color=averageStepsPerInterval$dayofweek), group = averageStepsPerInterval$dayofweek)
+g <- g + ggtitle('5 Minute Interval Time-Series')
+g <- g + xlab('Interval')
+g <- g + ylab('# Steps')
+g <- g + theme_bw()
+g <- g + theme(legend.title = element_blank()) + scale_color_discrete(name="Day of week")
+g <- g + theme(plot.title = element_text(size=20, face="bold", vjust=2))
+
+print(g)
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
+
+In this final plot, we can see the spike for the weekday at 835. However, there is a higher overall trend for the average number of steps taken during weekends. The data indicates this person is clearly more active on weekend days versus weekdays.
 
