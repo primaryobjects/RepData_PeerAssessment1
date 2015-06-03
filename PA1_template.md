@@ -66,6 +66,7 @@ stepsPerDayMedian <- median(stepsPerDay$steps)
 g1 <- ggplot(stepsPerDay, aes(x = steps))
 g1 <- g1 + geom_histogram(binwidth=5000, fill='#303030', col='black', alpha=I(.9))
 g1 <- g1 + ggtitle('Total Steps Per Day')
+g1 <- g1 + theme_bw()
 g1 <- g1 + theme(plot.title = element_text(size=20, face="bold", vjust=2))
 g1 <- g1 + xlab('# Steps')
 g1 <- g1 + ylab('Frequency')
@@ -74,13 +75,13 @@ g1 <- g1 + ylab('Frequency')
 g1 <- g1 + geom_vline(xintercept=stepsPerDayMean, col='red')
 
 # Include vertical line for median.
-g1 <- g1 + geom_vline(xintercept=stepsPerDayMedian, col='yellow', linetype='dashed')
+g1 <- g1 + geom_vline(xintercept=stepsPerDayMedian, col='blue', linetype='dashed')
 
 # Include labels.
-g1 <- g1 + geom_text(aes(20000, 24, label=paste('mean = ', round(stepsPerDayMean), sep='')), col='red', show_guide=FALSE)
-g1 <- g1 + geom_text(aes(20400, 22, label=paste('median = ', round(stepsPerDayMedian), sep='')), col='yellow', show_guide=FALSE)
+g1t <- g1 + geom_text(aes(20000, 24, label=paste('mean = ', round(stepsPerDayMean), sep='')), col='red', size=5,  show_guide=FALSE)
+g1t <- g1t + geom_text(aes(20400, 22, label=paste('median = ', round(stepsPerDayMedian), sep='')), col='blue', size=5, show_guide=FALSE)
 
-print(g1)
+print(g1t)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
@@ -147,6 +148,7 @@ qplot(missingSummary, x=missingSummary$set, y=missingSummary$count, geom='bar', 
 geom_text(aes(1, 1000, label=allCount), col='white', show_guide=FALSE) +
 geom_text(aes(2, 1000, label=cleanedCount), col='white', show_guide=FALSE) +
 geom_text(aes(3, 1000, label=missingCount), col='red', show_guide=FALSE) +
+theme_bw() + 
 theme(plot.title = element_text(size=20, face="bold", vjust=2))
 ```
 
@@ -189,6 +191,7 @@ stepsPerDayMedian <- median(stepsPerDay$steps)
 g2 <- ggplot(stepsPerDay, aes(x = steps))
 g2 <- g2 + geom_histogram(binwidth=5000, fill='#303030', col='black', alpha=I(.9))
 g2 <- g2 + ggtitle('Total Steps Per Day')
+g2 <- g2 + theme_bw()
 g2 <- g2 + theme(plot.title = element_text(size=20, face="bold", vjust=2))
 g2 <- g2 + xlab('# Steps')
 g2 <- g2 + ylab('Frequency')
@@ -197,13 +200,13 @@ g2 <- g2 + ylab('Frequency')
 g2 <- g2 + geom_vline(xintercept=stepsPerDayMean, col='red')
 
 # Include vertical line for median.
-g2 <- g2 + geom_vline(xintercept=stepsPerDayMedian, col='yellow', linetype='dashed')
+g2 <- g2 + geom_vline(xintercept=stepsPerDayMedian, col='blue', linetype='dashed')
 
 # Include labels.
-g2 <- g2 + geom_text(aes(20000, 24, label=paste('mean = ', round(stepsPerDayMean), sep='')), col='red', show_guide=FALSE)
-g2 <- g2 + geom_text(aes(20400, 22, label=paste('median = ', round(stepsPerDayMedian), sep='')), col='yellow', show_guide=FALSE)
+g2t <- g2 + geom_text(aes(20000, 24, label=paste('mean = ', round(stepsPerDayMean), sep='')), col='red', size=5,  show_guide=FALSE)
+g2t <- g2t + geom_text(aes(20400, 22, label=paste('median = ', round(stepsPerDayMedian), sep='')), col='blue', size=5,  show_guide=FALSE)
 
-print(g2)
+print(g2t)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
