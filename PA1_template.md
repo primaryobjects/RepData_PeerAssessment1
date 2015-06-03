@@ -1,6 +1,6 @@
 # Reproducible Research: Peer Assessment 1
 
-Kory Becker, June 3, 2015
+Kory Becker - June 3, 2015
 
 ## Introduction
 
@@ -119,14 +119,9 @@ g <- g + theme(plot.title = element_text(size=20, face="bold", vjust=2))
 g <- g + geom_vline(xintercept=maxStepsInterval$interval, col='red', linetype='dashed')
 
 # Include labels.
-g <- g + geom_text(aes(1300, 175, label=paste('max steps (', round(maxStepsInterval$steps), ')', sep=''), family='CourierNew'), col='red', show_guide=FALSE)
+g <- g + geom_text(aes(1300, 175, label=paste('max steps (', round(maxStepsInterval$steps), ')', sep='')), col='red', show_guide=FALSE)
 
 print(g)
-```
-
-```
-## Warning in grid.Call.graphics(L_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font family not found in Windows font database
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
