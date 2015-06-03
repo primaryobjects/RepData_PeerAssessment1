@@ -6,7 +6,7 @@ Kory Becker - June 3, 2015
 
 The following is an analysis of the data recorded from a personal activity monitoring device (ie., Fitbit, Nike Fuelband, etc), as part of a project for the Reproducbile Research class by Johns Hopkins University via Coursera. The analysis data was collected at 5-minute intervals throughout a series of days, spanning the months of October and November 2012.
 
-For this analysis, we'll load the data set, pre-process and clean the data, and analyze key metrics that summarize the overall data collected. These metrics include finding the mean total number of steps taken per day, the average daily activity pattern, anddetermining which 5-minute interval, on average, includes the most steps, and determining differences between weekday and weekend activity.
+For this analysis, we'll load the data set, pre-process and clean the data, and analyze key metrics that summarize the overall data collected. These metrics include finding the mean total number of steps taken per day, the average daily activity pattern, and determining which 5-minute interval, on average, includes the most steps, and determining differences between weekday and weekend activity.
 
 Let's get started!
 
@@ -95,7 +95,7 @@ Note in the above code, we're using ggplot2 to draw a histogram chart. We've dra
 
 Next, we'll determine the average daily activity pattern by plotting a time series chart. We'll display the 5-minute intervals on the x-axis and the average number of steps taken, averaged across all days, on the y-axis.
 
-To do this, we'll first calculate the average steps per interval, using the aggregate function. This is similar to the way we used the aggregate function above, with the difference of replacing 'data' with 'interval'.
+To do this, we'll first calculate the average steps per interval, using the aggregate function. This is similar to the way we used the aggregate function above, with the difference of replacing 'date' with 'interval'.
 
 We'll also determine which interval has the maximum number of steps. We can do this by simply checking for the max steps value within averageStepsPerInterval.
 
@@ -134,7 +134,7 @@ After running the above code, you can see that the interval with the maximum num
 
 ## Inputing missing values.
 
-So far, we've performed calculations on the cleaned data, with missing values (steps reported as NA) removed. More specifically, there are 17,568 rows in the original dataset, and only 15,264 rows after removing missing values. This leaves 2,304 rows of missing data that is unaccounted for. We can clearly show this in a chart, as follows:
+So far, we've performed calculations on the cleaned data, with missing values (steps reported as NA) removed. More specifically, there are 17,568 rows in the original dataset, and only 15,264 rows after removing missing values. This leaves 2,304 rows of missing data that is unaccounted for. We can more clearly show this in a chart, as follows:
 
 
 ```r
@@ -174,7 +174,7 @@ x <- lapply(seq_along(data3$interval), function(i) {
 })
 ```
 
-With the missing values filled in, let's try plotting the histogram again.
+With the missing values filled in, let's try plotting the histogram again. You'll find that this new chart looks quite familiar.
 
 
 ```r
@@ -223,12 +223,12 @@ grid.arrange(g1, g2, ncol=2)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
 
-As you can see in the side-by-side plots, the mean and median values remain the same. In fact, the only difference between the original data and the data with missing values replaced, is the overall frequency (ie., number of observations). This can be seen in the center tallest bar, which has grown from about 27 to 36.
+As you can see in the side-by-side plots, the mean and median values remain nearly the same. In fact, the only noticeable difference between the original data and the data with missing values replaced, is the overall frequency (ie., number of observations). This can be seen in the center tallest bar, which has grown from about 27 to 36.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-We'll use the newly created dataset, containing filled-in values for the missing NA fields. We'll add a new factor column to our dataset to indicate whether a date is a weekday or a weekend. We can do this with the following code:
+Now, let's compare activity for weekdays versus weekends. We'll use the newly created dataset, containing filled-in values for the missing NA fields. We'll also need to add a new factor column to our dataset to indicate whether a date is a weekday or a weekend. We can do this with the following code:
 
 
 ```r
